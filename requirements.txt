@@ -3,6 +3,6 @@ Faker==9.5.2
 pre-commit==2.15.0
 pytest==6.2.5
 python-decouple==3.5
-requests==2.26.0
+requests==2.31.0
 selenium==4.11.2
 webdriver-manager==4.0.0
