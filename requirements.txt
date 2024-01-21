@@ -4,5 +4,5 @@ pre-commit==2.15.0
 pytest==6.2.5
 python-decouple==3.5
 requests==2.31.0
-selenium==4.11.2
+selenium==4.15.2
 webdriver-manager==4.0.0
