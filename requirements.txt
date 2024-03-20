@@ -1,4 +1,4 @@
-black==22.3.0
+black==24.3.0
 pytest==6.2.5
 selenium==4.15.2
 webdriver-manager==4.0.0
