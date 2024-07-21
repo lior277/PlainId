@@ -1,4 +1,4 @@
-# Pymobitest
+# Automation interview assignment 
 
 use python 3.9 or 3.10 or higher
 
