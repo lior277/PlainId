@@ -1,0 +1,27 @@
+Create one test that preforms the following steps:
+1. Navigate to https://connecteam.com/
+2. Scroll down and click on 'careers' in the footer
+3. Select R&D from the left dropdown
+4. For all of the positions in the R&D in this section perform the following
+    a. click on 'Apply now'
+    b. On the form that appears in the right side fill the following details:
+        1. First name
+        2. Last name
+        3. Email
+        4. Phone
+        5. CV file upload - (a bonus step) - feel free to use the example_cv.pdf file in the project
+        5. LinkedIn profile
+        6. Are you available for hybrid work from an office in Israel? (yes/no)
+
+Feel free to use the video recording of the theses steps:
+
+https://connecteam-public.s3.eu-west-1.amazonaws.com/qa_automation/interview/qa_automation_task.mp4
+
+
+Several guidelines:
+
+1. The code must run on both windows and linux machines
+2. Use automation code best practices as much as possible - i.e design patterns, clean code, etc.
+Feel free to email orw@connecteam.com  if you have any questions
+
+Good luck !!

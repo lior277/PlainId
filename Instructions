@@ -1,8 +1,0 @@
-Create test that preforms the following steps:
-1. Navigate to https://connecteam.com/
-2. Scroll down and click on 'careers' in the footer
-3. Click on R&D
-4. For all of the roles in the R&D in this section perform the following
-    a. click on the role
-    b. Fill in the right side details (without attach cv button)
-       You dont need to click submit (this can trigger recaptcha)
