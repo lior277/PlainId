@@ -12,4 +12,4 @@ Perform the following steps:
 - pip3 install -r requirements.txt
 - run pytest
 
-After you finish the project setup please refer to instructions files for the task :)
+After you finish the project setup please refer to task_instructions_and_guidelines file for the task :)
