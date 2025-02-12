@@ -18,7 +18,7 @@ Create one test that preforms the following steps:
 
 Feel free to use the video recording of the theses steps in this video link:
 
-https://connecteam-public.s3.eu-west-1.amazonaws.com/qa_automation/interview/qa_automation_task.mp4
+https://connecteam-public.s3.eu-west-1.amazonaws.com/qa_automation/interview/task_recording.mp4
 
 After you are finished with the task please upload it to a google drive folder and share the link with the following email:
 
@@ -30,5 +30,6 @@ Several guidelines:
 1. The code must run on both windows and linux machines
 2. Use automation code best practices as much as possible - i.e design patterns, clean code, etc.
 Feel free to email orw@connecteam.com  if you have any questions
+3. Please note! The code should be considered as 'production ready' code as much as possible
 
 Good luck !!
