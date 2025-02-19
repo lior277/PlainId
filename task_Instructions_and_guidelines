@@ -14,11 +14,11 @@ Create one test that preforms the following steps:
         2. Last name
         3. Email
         4. Phone
-        5. CV file upload - (a bonus step not mandatory) - feel free to use the example_cv.pdf file in the project
+        5. CV file upload - please use the pdf example you have in the root of the project (example_cv.pdf)
 
 Feel free to use the video recording of the theses steps in this video link:
 
-https://connecteam-public.s3.eu-west-1.amazonaws.com/qa_automation/interview/task_recording.mp4
+https://connecteam-public.s3.eu-west-1.amazonaws.com/qa_automation/interview/task_instructions_recording.mp4
 
 After you are finished with the task please upload it to a google drive folder and share the link with the following email:
 
