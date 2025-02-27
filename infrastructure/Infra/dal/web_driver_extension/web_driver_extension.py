@@ -1,5 +1,5 @@
 from time import sleep
-from typing import Any, List
+from typing import Any, List, Optional
 
 from selenium.webdriver import Keys
 from selenium.webdriver.remote.webelement import WebElement
@@ -37,7 +37,7 @@ class SearchElement:
         self.by = by
         self.last_exception = None
 
-    def __call__(self, driver: WebDriver) -> WebElement:
+    def __call__(self, driver: WebDriver) -> Optional[WebElement]:
         try:
             element = driver.find_element(*self.by)
             if element is not None:
@@ -93,7 +93,7 @@ class SearchElements:
         self.by = by
         self.last_exception = None
 
-    def __call__(self, driver: WebDriver) -> list[WebElement]:
+    def __call__(self, driver: WebDriver) -> Optional[list[WebElement]]:
         try:
             return driver.find_elements(*self.by)
         except StaleElementReferenceException:
@@ -162,7 +162,7 @@ class ForceClick:
         self.element = element
         self.last_exception = None
 
-    def __call__(self, driver: WebDriver) -> WebElement:
+    def __call__(self, driver: WebDriver) -> Optional[WebElement]:
         try:
             # Use the provided element if available, otherwise find it using the locator
             if self.element is not None:
@@ -249,12 +249,11 @@ class UploadFile:
 
 
 class DriverEX:
-
     @staticmethod
     def switch_to_iframe(driver: WebDriver, by: tuple) -> bool:
         iframe = SwitchToIframe(by)
         try:
-            return WebDriverWait(driver, DataRep.time_to_wait_from_seconds,\
+            return WebDriverWait(driver, DataRep.time_to_wait_from_seconds,
                                  ignored_exceptions=ignore_exception_types())\
                 .until(iframe)
 
@@ -267,8 +266,8 @@ class DriverEX:
     def switch_to_default_content(driver: WebDriver) -> None:
         switch = SwitchToContent()
         try:
-            WebDriverWait(driver,\
-                                 DataRep.time_to_wait_from_seconds,\
+            WebDriverWait(driver,
+                                 DataRep.time_to_wait_from_seconds,
                                  ignored_exceptions=ignore_exception_types())\
                 .until(switch)
 
@@ -281,8 +280,8 @@ class DriverEX:
     def search_element(driver: WebDriver, by: tuple) -> WebElement:
         search = SearchElement(by)
         try:
-            return WebDriverWait(driver,\
-                                 DataRep.time_to_wait_from_seconds,\
+            return WebDriverWait(driver,
+                                 DataRep.time_to_wait_from_seconds,
                                  ignored_exceptions=ignore_exception_types())\
                 .until(search)
 
@@ -295,8 +294,8 @@ class DriverEX:
     def upload_file(driver: WebDriver, by: tuple, input_text: str) -> None:
         upload_file = UploadFile(by, input_text)
         try:
-            WebDriverWait(driver,\
-                          DataRep.time_to_wait_from_seconds,\
+            WebDriverWait(driver,
+                          DataRep.time_to_wait_from_seconds,
                           ignored_exceptions=ignore_exception_types())\
                 .until(upload_file)
 
@@ -309,8 +308,8 @@ class DriverEX:
     def send_keys_auto(driver: WebDriver, by: tuple, input_text: str) -> None:
         send_keys = SendKeysAuto(by, input_text)
         try:
-            WebDriverWait(driver,\
-                          DataRep.time_to_wait_from_seconds,\
+            WebDriverWait(driver,
+                          DataRep.time_to_wait_from_seconds,
                           ignored_exceptions=ignore_exception_types())\
                 .until(send_keys)
 
@@ -333,8 +332,8 @@ class DriverEX:
     def search_elements(driver: WebDriver, by: tuple) -> List[WebElement]:
         search = SearchElements(by)
         try:
-            return WebDriverWait(driver,\
-                                 DataRep.time_to_wait_from_seconds,\
+            return WebDriverWait(driver,
+                                 DataRep.time_to_wait_from_seconds,
                                  ignored_exceptions=ignore_exception_types())\
                 .until(search)
 
@@ -347,8 +346,8 @@ class DriverEX:
     def force_click(driver: WebDriver, by: tuple, element: WebElement = None) -> bool:
         click = ForceClick(by, element)
         try:
-            element = WebDriverWait(driver,\
-                                    DataRep.time_to_wait_from_seconds,\
+            element = WebDriverWait(driver,
+                                    DataRep.time_to_wait_from_seconds,
                                     ignored_exceptions=ignore_exception_types())\
                 .until(click)
 
@@ -362,8 +361,8 @@ class DriverEX:
     def select_element_from_dropdown_by_value(driver: WebDriver, by: tuple, list_item_value: str) -> None:
         select = SelectElementFromDropDownByValue(by, list_item_value)
         try:
-            WebDriverWait(driver,\
-                          DataRep.time_to_wait_from_seconds,\
+            WebDriverWait(driver,
+                          DataRep.time_to_wait_from_seconds,
                           ignored_exceptions=ignore_exception_types())\
                 .until(select)
 
@@ -376,8 +375,8 @@ class DriverEX:
     def get_element_text(driver: WebDriver, by: tuple) -> str:
         get_text = GetElementText(by)
         try:
-            return WebDriverWait(driver,\
-                                 DataRep.time_to_wait_from_seconds,\
+            return WebDriverWait(driver,
+                                 DataRep.time_to_wait_from_seconds,
                                  ignored_exceptions=ignore_exception_types())\
                 .until(get_text)
 
