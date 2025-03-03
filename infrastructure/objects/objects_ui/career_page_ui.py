@@ -17,7 +17,6 @@ class CareerPageUi:
         self.__upload_resume_ext = (By.CSS_SELECTOR, "input[type='file']")
         self.__iframe_ext = (By.CSS_SELECTOR, "iframe[id='grnhse_iframe']")
 
-
     def fill_application_form(self, form_fields: dict[str, str]):
         try:
             DriverEX.switch_to_iframe(driver=self.__driver, by=self.__iframe_ext)

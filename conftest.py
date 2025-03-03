@@ -14,12 +14,14 @@ def chrome_web_driver_base(request):
 
     try:
         service = Service()
+
         chrome_web_driver = webdriver.Chrome(
             service=service, options=options
         )
     except Exception:
         downloaded_binary_path = ChromeDriverManager().install()
         service = Service(executable_path=downloaded_binary_path)
+
         chrome_web_driver = webdriver.Chrome(
             service=service, options=options
         )

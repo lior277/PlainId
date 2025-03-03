@@ -280,8 +280,7 @@ class DriverEX:
     def search_element(driver: WebDriver, by: tuple) -> WebElement:
         search = SearchElement(by)
         try:
-            return WebDriverWait(driver,
-                                 DataRep.time_to_wait_from_seconds,
+            return WebDriverWait(driver, DataRep.time_to_wait_from_seconds,
                                  ignored_exceptions=ignore_exception_types())\
                 .until(search)
 

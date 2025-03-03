@@ -62,14 +62,8 @@ class CareersPageUi:
             for index in range(total_buttons):
                 try:
                     print(f"Applying for job {index + 1} of {total_buttons}")
-
-                    element_link =DriverEX.search_element(\
-                        driver=self.__driver,\
-                        by=self.__apply_now_link_ext)\
-                        .get_attribute("href")
-
+                    element_link = apply_now_buttons[index].get_attribute("href")
                     self.__career_page = CareerPageUi(self.__driver)
-
                     self.__driver.execute_script(f"window.open('{element_link}', '_blank');")
                     self.__driver.switch_to.window(self.__driver.window_handles[1])
 

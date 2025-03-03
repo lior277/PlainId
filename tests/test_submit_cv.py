@@ -21,30 +21,22 @@ class TestSubmitCv:
         home_page_ui = HomePageUi(chrome_web_driver_base)
         filters = FiltersUi(chrome_web_driver_base)
 
-        # NOT RECOMMENDED: OPEN FORM IN THE SAME TAB
-        # 1. Relay on index - possible out of range -
-        # need to assume the total number does not change on "Back"
-        # 2. Performs search for the same elements for every iteration (to avoid StaleElement)
-        # 3. When click 'Back' it is possible to lose the original state of the page
-        careers_page = home_page_ui \
-            .click_on_careers_link()
-
-        filters.select_department_filter(filter_value="R&D")
-
-        careers_page\
-         .apply_to_all_jobs_same_tab(form_fields=apply_form_parameters)
+        # # NOT RECOMMENDED: OPEN FORM IN THE SAME TAB
+        # # 1. Relay on index - possible out of range -
+        # # need to assume the total number does not change on "Back"
+        # # 2. Performs search for the same elements for every iteration (to avoid StaleElement)
+        # # 3. When click 'Back' it is possible to lose the original state of the page
+        # careers_page = home_page_ui .click_on_careers_link()
+        # filters.select_department_filter(filter_value="R&D")
+        # careers_page.apply_to_all_jobs_same_tab(form_fields=apply_form_parameters)
 
         # RECOMMENDED: OPEN FORM IN A NEW TAB
         # 1. Does not use index - uses cached elements
         # 2. Open link in new tab and switch context
         # - this avoid StaleElement and keep the original state of the page
-        careers_page = home_page_ui \
-            .click_on_careers_link()
-
+        careers_page = home_page_ui.click_on_careers_link()
         filters.select_department_filter(filter_value="R&D")
-
-        careers_page \
-            .apply_to_all_jobs_new_tab(form_fields=apply_form_parameters)
+        careers_page.apply_to_all_jobs_new_tab(form_fields=apply_form_parameters)
 
 
 
