@@ -1,7 +1,6 @@
 from time import sleep
 from typing import Any, List, Optional
 
-from selenium.webdriver import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.select import Select
@@ -215,8 +214,7 @@ class SendKeysAuto:
             existing_text = element.get_attribute("value") or element.text
 
             if self.input_text != existing_text:
-                element.send_keys(Keys.CONTROL + "a")
-                element.send_keys(Keys.DELETE)
+                element.clear()
                 element.send_keys(self.input_text)
                 return False
             return True
