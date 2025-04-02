@@ -30,4 +30,10 @@ class CustomAssert:
             raise AssertionError(message)
 
 
+    @staticmethod
+    def assert_in(expected, container, message=None):
+        if expected not in container:
+            if message is None:
+                message = f"Expected {expected} to be in {container}"
+            raise AssertionError(message)
 

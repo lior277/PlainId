@@ -51,6 +51,42 @@ class SearchElement:
             return None
 
 
+class SwitchToIframe:
+    def __init__(self, by: tuple):
+        self.by = by
+        self.last_exception = None
+
+    def __call__(self, driver: WebDriver) -> bool:
+        try:
+            element = DriverEX.search_element(driver, self.by)
+
+            if element is None:
+                return False
+
+            driver.switch_to.frame(element)
+            sleep(0.3)
+            return True
+        except StaleElementReferenceException:
+            sleep(0.3)
+            return False
+        except Exception as e:
+            self.last_exception = e
+            return False
+
+
+class SwitchToContent:
+    def __init__(self):
+        self.last_exception = None
+
+    def __call__(self, driver: WebDriver) -> bool:
+        try:
+            driver.switch_to.default_content()
+            return True
+        except Exception as e:
+            self.last_exception = e
+            return False
+
+
 class SearchElements:
     def __init__(self, by: tuple):
         self.by = by
@@ -72,6 +108,42 @@ class SearchElements:
         except Exception as e:
             self.last_exception = Exception(f"Error in SearchElements: {str(e)} for locator: {self.by}")
             return None
+
+class SelectElementFromDropDownByValue:
+    def __init__(self, by: tuple, list_item_value: str):
+        self.by = by
+        self.list_item_value = list_item_value
+        self.last_exception = None
+
+    def __call__(self, driver: WebDriver) -> Any:
+        try:
+            element = driver.find_element(*self.by)
+            Select(element).select_by_value(self.list_item_value)
+            return element
+        except ElementClickInterceptedException:
+            ScrollToElement(self.by)(driver)
+            return None
+        except StaleElementReferenceException:
+            sleep(0.3)
+            return None
+        except Exception as e:
+            self.last_exception = e
+            return None
+
+
+class NavigateToUrl:
+    def __init__(self, url: str):
+        self.url = url
+        self.last_exception = None
+
+    def __call__(self, driver: WebDriver) -> None:
+        try:
+            driver.get(self.url)
+        except StaleElementReferenceException:
+            sleep(0.3)
+        except Exception as e:
+            self.last_exception = e
+
 
 class ScrollToElement:
     def __init__(self, by: tuple):
@@ -159,6 +231,54 @@ class SendKeysAuto:
             return False
 
 
+class UploadFile:
+    def __init__(self, by: tuple, input_text: str):
+        self.by = by
+        self.input_text = input_text
+        self.last_exception = None
+
+    def __call__(self, driver: WebDriver) -> bool:
+        try:
+            element = driver.find_element(*self.by)
+            element.send_keys(self.input_text)
+            sleep(0.015)
+            return True
+        except StaleElementReferenceException:
+            sleep(0.3)
+            return False
+        except Exception as e:
+            self.last_exception = e
+            return False
+
+
+class DriverEX:
+    @staticmethod
+    def switch_to_iframe(driver: WebDriver, by: tuple) -> bool:
+        iframe = SwitchToIframe(by)
+        try:
+            return WebDriverWait(driver, DataRep.time_to_wait_from_seconds,
+                                 ignored_exceptions=ignore_exception_types())\
+                .until(iframe)
+
+        except TimeoutException:
+            if iframe.last_exception:
+                raise iframe.last_exception
+            raise
+
+    @staticmethod
+    def switch_to_default_content(driver: WebDriver) -> None:
+        switch = SwitchToContent()
+        try:
+            WebDriverWait(driver,
+                                 DataRep.time_to_wait_from_seconds,
+                                 ignored_exceptions=ignore_exception_types())\
+                .until(switch)
+
+        except TimeoutException:
+            if switch.last_exception:
+                raise switch.last_exception
+            raise
+
     @staticmethod
     def search_element(driver: WebDriver, by: tuple) -> WebElement:
         search = SearchElement(by)
@@ -172,6 +292,19 @@ class SendKeysAuto:
                 raise search.last_exception
             raise
 
+    @staticmethod
+    def upload_file(driver: WebDriver, by: tuple, input_text: str) -> None:
+        upload_file = UploadFile(by, input_text)
+        try:
+            WebDriverWait(driver,
+                          DataRep.time_to_wait_from_seconds,
+                          ignored_exceptions=ignore_exception_types())\
+                .until(upload_file)
+
+        except TimeoutException:
+            if upload_file.last_exception:
+                raise upload_file.last_exception
+            raise
 
     @staticmethod
     def send_keys_auto(driver: WebDriver, by: tuple, input_text: str) -> None:
@@ -185,6 +318,16 @@ class SendKeysAuto:
         except TimeoutException:
             if send_keys.last_exception:
                 raise send_keys.last_exception
+            raise
+
+    @staticmethod
+    def navigate_to_url(driver: WebDriver, url: str) -> None:
+        nav = NavigateToUrl(url)
+        try:
+            WebDriverWait(driver, 30, ignored_exceptions=ignore_exception_types()).until(nav)
+        except TimeoutException:
+            if nav.last_exception:
+                raise nav.last_exception
             raise
 
     @staticmethod
@@ -215,7 +358,6 @@ class SendKeysAuto:
 
             # Return empty list for any type of timeout
             return []
-
     @staticmethod
     def force_click(driver: WebDriver, by: tuple, element: WebElement = None) -> bool:
         click = ForceClick(by, element)
@@ -231,6 +373,19 @@ class SendKeysAuto:
                 raise click.last_exception
             raise
 
+    @staticmethod
+    def select_element_from_dropdown_by_value(driver: WebDriver, by: tuple, list_item_value: str) -> None:
+        select = SelectElementFromDropDownByValue(by, list_item_value)
+        try:
+            WebDriverWait(driver,
+                          DataRep.time_to_wait_from_seconds,
+                          ignored_exceptions=ignore_exception_types())\
+                .until(select)
+
+        except TimeoutException:
+            if select.last_exception:
+                raise select.last_exception
+            raise
 
     @staticmethod
     def get_element_text(driver: WebDriver, by: tuple) -> str:
