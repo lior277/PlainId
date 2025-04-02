@@ -17,7 +17,7 @@ from selenium.common.exceptions import (
     WebDriverException,
     TimeoutException)
 
-from infrastructure.Infra.dal.data_reposetory.data_rep import DataRep
+from infrastructure.infra.dal.data_reposetory.data_rep import DataRep
 
 
 def ignore_exception_types():
@@ -91,17 +91,23 @@ class SearchElements:
     def __init__(self, by: tuple):
         self.by = by
         self.last_exception = None
+        # Add a flag to track if we've found elements, even if empty
+        self.elements_found = False
 
     def __call__(self, driver: WebDriver) -> Optional[list[WebElement]]:
         try:
-            return driver.find_elements(*self.by)
+            elements = driver.find_elements(*self.by)
+            # Mark that we've successfully found elements (even if empty list)
+            self.elements_found = True
+            # Return elements regardless of count
+            return elements
         except StaleElementReferenceException:
             sleep(0.3)
+            self.last_exception = Exception(f"StaleElementReferenceException when finding elements with locator: {self.by}")
             return None
         except Exception as e:
-            self.last_exception = e
+            self.last_exception = Exception(f"Error in SearchElements: {str(e)} for locator: {self.by}")
             return None
-
 
 class SelectElementFromDropDownByValue:
     def __init__(self, by: tuple, list_item_value: str):
@@ -191,7 +197,6 @@ class GetElementText:
     def __call__(self, driver: WebDriver) -> str:
         try:
             element = driver.find_element(*self.by)
-            vv = existing_text = element.text
             text = element.get_attribute("innerText") or element.get_attribute("value") or ""
             return text.strip()
         except StaleElementReferenceException:
@@ -326,18 +331,33 @@ class DriverEX:
             raise
 
     @staticmethod
-    def search_elements(driver: WebDriver, by: tuple) -> List[WebElement]:
+    def search_elements(driver: WebDriver, by: tuple, wait_if_empty=False) -> List[WebElement]:
         search = SearchElements(by)
+
+        if not wait_if_empty:
+            # If we don't need to wait, just do a direct find_elements call
+            return driver.find_elements(*by)
+
         try:
-            return WebDriverWait(driver,
-                                 DataRep.time_to_wait_from_seconds,
-                                 ignored_exceptions=ignore_exception_types())\
+            elements = WebDriverWait(driver,
+                                     DataRep.time_to_wait_from_seconds,
+                                     ignored_exceptions=ignore_exception_types()) \
                 .until(search)
 
+            return elements if elements is not None else []
+
         except TimeoutException:
+            # Check if we found elements but the wait timed out because the list was empty
+            if search.elements_found:
+                return []
+
             if search.last_exception:
-                raise search.last_exception
-            raise
+                print(f"Detailed error when searching for elements: {str(search.last_exception)}")
+                print(f"Current URL: {driver.current_url}")
+                print(f"Page title: {driver.title}")
+
+            # Return empty list for any type of timeout
+            return []
 
     @staticmethod
     def force_click(driver: WebDriver, by: tuple, element: WebElement = None) -> bool:

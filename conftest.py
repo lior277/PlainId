@@ -1,31 +1,20 @@
 import pytest
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.webdriver import WebDriver
-from webdriver_manager.chrome import ChromeDriverManager
+
+from infrastructure.infra.dal.data_reposetory.data_rep import DataRep
+from tests.test_suit_Base import TestSuitBase
 
 
-@pytest.fixture(autouse=True)
-def chrome_web_driver_base(request):
-    chrome_web_driver: WebDriver
-    options = webdriver.ChromeOptions()
-    options.add_argument("--incognito")
-    options.add_argument("--allow-running-insecure-content")
+@pytest.fixture(scope='function')
+def setup_and_teardown():
+    # Setup code here (run before each test)
+    print("Setup: This will run before each test")
+    driver = TestSuitBase.get_driver()
+    driver.maximize_window()
+    driver.get(DataRep.banking_project_url)
 
-    try:
-        service = Service()
+    yield driver  # Provide the driver to the test
 
-        chrome_web_driver = webdriver.Chrome(
-            service=service, options=options
-        )
-    except Exception:
-        downloaded_binary_path = ChromeDriverManager().install()
-        service = Service(executable_path=downloaded_binary_path)
-
-        chrome_web_driver = webdriver.Chrome(
-            service=service, options=options
-        )
-
-    chrome_web_driver.maximize_window()
-    yield chrome_web_driver
-    chrome_web_driver.close()
+    # Teardown code here (run after each test)
+    print("Teardown: This will run after each test")
+    if driver:
+        TestSuitBase.driver_dispose(driver=driver)

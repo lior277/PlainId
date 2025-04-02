@@ -1,19 +1,20 @@
-from selenium.webdriver.chrome import webdriver
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
-from infrastructure.Infra.dal.web_driver_extension.web_driver_extension import DriverEX
-from infrastructure.objects.objects_ui.careers_page_ui import CareersPageUi
+from infrastructure.infra.dal.web_driver_extension.web_driver_extension import DriverEX
+from infrastructure.objects.objects_ui.login_page_ui import LoginPageUi
 
 
 class HomePageUi:
-    def __init__(self, driver: webdriver) -> None:
+    def __init__(self, driver: WebDriver) -> None:
         self.driver = driver
 
     # locators
-        self.__career_link = By.CSS_SELECTOR, "a[href='/careers/']"
+        self.__customer_login_btn = By.CSS_SELECTOR, "button[ng-click='customer()']"
 
-    def click_on_careers_link(self) -> CareersPageUi:
-            DriverEX.force_click(driver=self.driver, by=self.__career_link)
-            return CareersPageUi(self.driver)
+    def click_on_customer_login(self) -> LoginPageUi:
+            DriverEX.force_click(driver=self.driver, by=self.__customer_login_btn)
+
+            return LoginPageUi(self.driver)
 
 
